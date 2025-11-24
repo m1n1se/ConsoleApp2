@@ -13,7 +13,7 @@ namespace ZadanieNorbit
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            Console.Write("Введите число N: ");
+            Console.Write("Введите число n: ");
             string input = Console.ReadLine();
             
             if (int.TryParse(input, out int n))
@@ -39,7 +39,7 @@ namespace ZadanieNorbit
         /// <returns> Выводит нечетные числа от 1 до n </returns>
         static string GetOddNumbers(int n)
         {
-            CheckValueGreaterThan(n, "Ожидается длина стороны > 0", nameof(n));
+            CheckValueGreaterThan(n, "Ожидается число > 0", nameof(n));
 
             string result = "";
 
