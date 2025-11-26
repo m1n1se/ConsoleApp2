@@ -15,21 +15,184 @@ namespace ZadanieNorbit
         {
             Console.Write("Введите число n: ");
             string input = Console.ReadLine();
-            
+
             if (int.TryParse(input, out int n))
             {
-                GetOddNumbers(n);
+               // GetOddNumbers(n);
             }
 
-            Console.WriteLine("Квадрат:");
-            Console.WriteLine(GetKubX(n));
+            //Console.WriteLine("Квадрат:");
+            //Console.WriteLine(GetKubX(n));
 
-            Console.Write("Введите строку для проверки: ");
+            //Console.Write("Введите строку для проверки: ");
+
+            //string userInput = Console.ReadLine();
+
+            //Console.WriteLine("Результат проверки:");
+            //Console.WriteLine(GetRepeatedLetters(userInput, "hello"));
+
+            Console.WriteLine("\nРомб:");
+            Console.WriteLine(GetDiamond(n, n / 2, ""));
+
+            Console.WriteLine("\nТреугольник:");
+            Console.WriteLine(GetTriangle(n, ""));
+
+            Console.WriteLine("\nСтрелка:");
+            Console.WriteLine(GetArrow(n, n / 2, ""));
+        }
+
+        /// <summary>
+        /// Функция для вывода ромба с пустым центром
+        /// </summary>
+        /// <param name="n">Длина диагонали (положительное нечётное число)</param>
+        /// <param name="result">Пустая строка для вывода результата</param>
+        /// <param name="half">Значение середины ромба</param>
+        /// <returns>Строка с ромбом</returns>
+        static string GetDiamond(int n, int half, string result)
+        {
+            CheckValueGreaterThan(n, "Ожидается число > 0", nameof(n));
+            if (n % 2 == 0)
+                throw new ArgumentException("N должно быть нечётным числом", nameof(n));
+
+            // Верхняя половина ромба
+            for (var i = 0; i < half; i++)
+            {
+                // Пробелы слева
+                for (var j = 0; j < half - i; j++)
+                    result += " ";
+
+                // Первый символ X
+                result += "X";
+
+                // Пробелы внутри
+                if (i > 0)
+                {
+                    for (var j = 0; j < 2 * i - 1; j++)
+                        result += " ";
+                    result += "X";
+                }
+
+                result += "\n";
+            }
+
+            // Центральная строка
+            result += "X";
+            for (var j = 0; j < n - 2; j++)
+                result += " ";
+            result += "X\n";
+
+            // Нижняя половина ромба
+            for (var i = half - 1; i >= 0; i--)
+            {
+                // Пробелы слева
+                for (var j = 0; j < half - i; j++)
+                    result += " ";
+
+                // Первый символ X
+                result += "X";
+
+                // Пробелы внутри
+                if (i > 0)
+                {
+                    for (var j = 0; j < 2 * i - 1; j++)
+                        result += " ";
+                    result += "X";
+                }
+
+                result += "\n";
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Функция для вывода треугольника с пустым центром
+        /// </summary>
+        /// <param name="n">Высота треугольника</param>
+        /// <param name="result">Пустая строка для вывода результата</param>
+        /// <returns>Строка с треугольником</returns>
+        static string GetTriangle(int n, string result)
+        {
+            CheckValueGreaterThan(n, "Ожидается число > 0", nameof(n));
             
-            string userInput = Console.ReadLine();
+            for (var i = 0; i < n; i++)
+            {
+                if (i == 0)
+                {
+                    // Первая строка - один X
+                    result += "X\n";
+                }
+                else if (i == n - 1)
+                {
+                    // Последняя строка - все X
+                    for (var j = 0; j < n; j++)
+                        result += "X";
+                    result += "\n";
+                }
+                else
+                {
+                    // Промежуточные строки - X по краям и пробелы внутри
+                    result += "X";
+                    for (var j = 0; j < i - 1; j++)
+                        result += " ";
+                    result += "X\n";
+                }
+            }
 
-            Console.WriteLine("Результат проверки:");
-            Console.WriteLine(GetRepeatedLetters(userInput, "hello"));
+            return "";
+        }
+
+        /// <summary>
+        /// Функция для вывода стрелки
+        /// </summary>
+        /// <param name="n">Высота стрелки (рекомендуется нечётное)</param>
+        /// <param name="result">Пустая строка для вывода результата</param>
+        /// <param name="half">Значение середины стрелки</param>
+        /// <returns>Строка со стрелкой</returns>
+        static string GetArrow(int n, int half, string result)
+        {
+            CheckValueGreaterThan(n, "Ожидается число > 0", nameof(n));
+            if (n % 2 == 0)
+                throw new ArgumentException("N должно быть нечётным числом", nameof(n));
+
+            // Верхняя часть стрелки (остриё)
+            for (int i = 0; i <= half; i++)
+            {
+                if (i == 0)
+                {
+                    // Первая строка - один X
+                    result += "X\n";
+                }
+                else
+                {
+                    // Остальные строки верхней части
+                    result += "X";
+                    // Пробелы внутри - правильное количество для симметрии
+                    for (int j = 0; j < 2 * i - 1; j++)
+                        result += " ";
+                    result += "X\n";
+                }
+            }
+
+            // Нижняя часть стрелки (основание)
+            for (int i = half - 1; i >= 0; i--)
+            {
+                if (i == 0)
+                {
+                    // Последняя строка - один X
+                    result += "X\n";
+                }
+                else
+                {
+                    // Промежуточные строки нижней части
+                    result += "X";
+                    for (int j = 0; j < 2 * i - 1; j++)
+                        result += " ";
+                    result += "X\n";
+                }
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -41,9 +204,9 @@ namespace ZadanieNorbit
         {
             CheckValueGreaterThan(n, "Ожидается число > 0", nameof(n));
 
-            string result = "";
+            var result = "";
 
-            for (int i = 1; i <= n; i += 2)
+            for (var i = 1; i <= n; i += 2)
             {
                 result += i.ToString() + " ";
             }
@@ -60,11 +223,11 @@ namespace ZadanieNorbit
         {
             CheckValueGreaterThan(n, "Ожидается длина стороны > 0", nameof(n));
 
-            string result = "";
+            var result = "";
 
-            for (int i = 1; i <= n; i++)
+            for (var i = 1; i <= n; i++)
             {
-                for (int j = 1; j <= n; j++)
+                for (var j = 1; j <= n; j++)
                 {
                     if (i == 1 || i == n || j == 1 || j == n)
                     {
@@ -72,7 +235,7 @@ namespace ZadanieNorbit
                     }
                     else
                     {
-                        result += "  "; 
+                        result += "  ";
                     }
                 }
                 result += "\n";
@@ -80,7 +243,7 @@ namespace ZadanieNorbit
 
             return result;
         }
-  
+
         /// <summary>
         /// Функция для проверки, содержит ли строка последовательность букв "hello"
         /// </summary>
@@ -88,13 +251,13 @@ namespace ZadanieNorbit
         /// <returns> Выводит "YES" или "NO" в зависимости от того, содержит ли строка последовательность букв "hello" </returns>
         static bool GetRepeatedLetters(string input, string word)
         {
-            int index = 0;
+            var index = 0;
 
-            for (int i = 0; i < input.Length; i++)
+            for (var i = 0; i < input.Length; i++)
             {
                 if (input[i] == word[index])
                 {
-                    index++; 
+                    index++;
 
                     if (index == word.Length)
                     {
@@ -121,5 +284,7 @@ namespace ZadanieNorbit
                 throw new ArgumentException(message, paramName);
             }
         }
+
+
     }
 }
