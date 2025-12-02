@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace ZadanieNorbit
 {
@@ -18,7 +20,7 @@ namespace ZadanieNorbit
 
             if (int.TryParse(input, out int n))
             {
-               // GetOddNumbers(n);
+                // GetOddNumbers(n);
             }
 
             //Console.WriteLine("Квадрат:");
@@ -54,17 +56,14 @@ namespace ZadanieNorbit
             if (n % 2 == 0)
                 throw new ArgumentException("N должно быть нечётным числом", nameof(n));
 
-            // Верхняя половина ромба
             for (var i = 0; i < half; i++)
             {
-                // Пробелы слева
+
                 for (var j = 0; j < half - i; j++)
                     result += " ";
 
-                // Первый символ X
                 result += "X";
 
-                // Пробелы внутри
                 if (i > 0)
                 {
                     for (var j = 0; j < 2 * i - 1; j++)
@@ -75,23 +74,19 @@ namespace ZadanieNorbit
                 result += "\n";
             }
 
-            // Центральная строка
             result += "X";
             for (var j = 0; j < n - 2; j++)
                 result += " ";
             result += "X\n";
 
-            // Нижняя половина ромба
             for (var i = half - 1; i >= 0; i--)
             {
-                // Пробелы слева
+
                 for (var j = 0; j < half - i; j++)
                     result += " ";
 
-                // Первый символ X
                 result += "X";
 
-                // Пробелы внутри
                 if (i > 0)
                 {
                     for (var j = 0; j < 2 * i - 1; j++)
@@ -114,24 +109,21 @@ namespace ZadanieNorbit
         static string GetTriangle(int n, string result)
         {
             CheckValueGreaterThan(n, "Ожидается число > 0", nameof(n));
-            
+
             for (var i = 0; i < n; i++)
             {
                 if (i == 0)
                 {
-                    // Первая строка - один X
                     result += "X\n";
                 }
                 else if (i == n - 1)
                 {
-                    // Последняя строка - все X
                     for (var j = 0; j < n; j++)
                         result += "X";
                     result += "\n";
                 }
                 else
                 {
-                    // Промежуточные строки - X по краям и пробелы внутри
                     result += "X";
                     for (var j = 0; j < i - 1; j++)
                         result += " ";
@@ -155,36 +147,29 @@ namespace ZadanieNorbit
             if (n % 2 == 0)
                 throw new ArgumentException("N должно быть нечётным числом", nameof(n));
 
-            // Верхняя часть стрелки (остриё)
             for (int i = 0; i <= half; i++)
             {
                 if (i == 0)
                 {
-                    // Первая строка - один X
                     result += "X\n";
                 }
                 else
                 {
-                    // Остальные строки верхней части
                     result += "X";
-                    // Пробелы внутри - правильное количество для симметрии
                     for (int j = 0; j < 2 * i - 1; j++)
                         result += " ";
                     result += "X\n";
                 }
             }
 
-            // Нижняя часть стрелки (основание)
             for (int i = half - 1; i >= 0; i--)
             {
                 if (i == 0)
                 {
-                    // Последняя строка - один X
                     result += "X\n";
                 }
                 else
                 {
-                    // Промежуточные строки нижней части
                     result += "X";
                     for (int j = 0; j < 2 * i - 1; j++)
                         result += " ";
@@ -285,6 +270,45 @@ namespace ZadanieNorbit
             }
         }
 
+        class File
+        {
+            public string name;
+            public string path;
+            public int size;
+
+            public int GetSize()
+            {
+                return size;
+            }
+
+        }
+
+        class Directory
+        {
+            public string name;
+            public string path;
+
+            public List<File> files;
+            public List<Directory> durectories;
+
+            public int GetSize()
+            {
+                int totalSize = 0;
+                
+                foreach (File file in files)
+                {
+                    totalSize += file.GetSize();
+                }
+
+                foreach (Directory durectory in durectories)
+                {
+                    totalSize += durectory.GetSize();
+                }
+
+                return totalSize;
+            }
+
+        }
 
     }
 }

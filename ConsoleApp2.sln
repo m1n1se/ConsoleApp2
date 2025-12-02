@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp2", "ConsoleApp2\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ZadanieNorbit", "ZadanieNorbit", "{36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop", "Shop\Shop.csproj", "{7D725D44-1C61-42AE-A113-2F82A4C232B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +19,17 @@ Global
 		{5C044A5D-5352-42F0-B1FF-46FB8822DD67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C044A5D-5352-42F0-B1FF-46FB8822DD67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C044A5D-5352-42F0-B1FF-46FB8822DD67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D725D44-1C61-42AE-A113-2F82A4C232B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D725D44-1C61-42AE-A113-2F82A4C232B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D725D44-1C61-42AE-A113-2F82A4C232B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D725D44-1C61-42AE-A113-2F82A4C232B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5C044A5D-5352-42F0-B1FF-46FB8822DD67} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
+		{7D725D44-1C61-42AE-A113-2F82A4C232B5} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {78FB28B9-CD4F-472A-90BE-2F04E72F73A6}
