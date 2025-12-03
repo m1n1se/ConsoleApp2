@@ -7,7 +7,7 @@ namespace ZadanieNorbit
     /// <summary>
     /// Класс для выполнения дз 
     /// </summary>
-    internal class Zadanie
+    public class Zadanie
     {
         /// <summary>
         /// Основная функция 
@@ -234,7 +234,7 @@ namespace ZadanieNorbit
         /// </summary>
         /// <param name="input"> Исходная строка </param>
         /// <returns> Выводит "YES" или "NO" в зависимости от того, содержит ли строка последовательность букв "hello" </returns>
-        static bool GetRepeatedLetters(string input, string word)
+        public static bool GetRepeatedLetters(string input, string word)
         {
             var index = 0;
 
@@ -268,46 +268,6 @@ namespace ZadanieNorbit
             {
                 throw new ArgumentException(message, paramName);
             }
-        }
-
-        class File
-        {
-            public string name;
-            public string path;
-            public int size;
-
-            public int GetSize()
-            {
-                return size;
-            }
-
-        }
-
-        class Directory
-        {
-            public string name;
-            public string path;
-
-            public List<File> files;
-            public List<Directory> durectories;
-
-            public int GetSize()
-            {
-                int totalSize = 0;
-                
-                foreach (File file in files)
-                {
-                    totalSize += file.GetSize();
-                }
-
-                foreach (Directory durectory in durectories)
-                {
-                    totalSize += durectory.GetSize();
-                }
-
-                return totalSize;
-            }
-
         }
 
     }

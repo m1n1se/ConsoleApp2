@@ -4,116 +4,113 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shop
+public class Product(int id, string name, decimal price, int stock)
 {
-    class Program
+    public int Id { get; } = id;
+    public string Name { get; } = name;
+    public decimal Price { get; } = price;
+    public int Stock { get; private set; } = stock;
+
+    public bool ReduceStock(int quantity)
     {
-        // Структура для товара
-        struct Product
+        if (Stock < quantity) return false;
+        Stock -= quantity;
+        return true;
+    }
+}
+
+public class Customer(int id, string name, string email)
+{
+    public int Id { get; } = id;
+    public string Name { get; } = name;
+    public string Email { get; } = email;
+    public List<Order> Orders { get; } = new();
+}
+
+public class Order
+{
+    public int Id { get; }
+    public Customer Customer { get; }
+    public List<(Product Product, int Quantity)> Items { get; } = new();
+    public DateTime Date { get; } = DateTime.Now;
+    public string Status { get; set; } = "Создан";
+    public decimal Total { get; private set; }
+
+    public Order(int id, Customer customer)
+    {
+        Id = id;
+        Customer = customer;
+        customer.Orders.Add(this);
+    }
+
+    public void AddItem(Product product, int quantity)
+    {
+        if (!product.ReduceStock(quantity))
+            throw new Exception($"Недостаточно {product.Name}");
+
+        Items.Add((product, quantity));
+        Total += product.Price * quantity;
+    }
+
+    public void Pay(string method)
+    {
+        Status = $"Оплачен ({method})";
+    }
+}
+
+public class Shop
+{
+    private readonly List<Product> _products = new();
+    private readonly List<Customer> _customers = new();
+    private int _orderCounter = 1;
+
+    public Product AddProduct(string name, decimal price, int stock)
+    {
+        var product = new Product(_products.Count + 1, name, price, stock);
+        _products.Add(product);
+        return product;
+    }
+
+    public Customer AddCustomer(string name, string email)
+    {
+        var customer = new Customer(_customers.Count + 1, name, email);
+        _customers.Add(customer);
+        return customer;
+    }
+
+    public Order CreateOrder(Customer customer, params (Product Product, int Quantity)[] items)
+    {
+        var order = new Order(_orderCounter++, customer);
+
+        foreach (var (product, quantity) in items)
         {
-            public string Name;
-            public int Price;
+            order.AddItem(product, quantity);
         }
 
-        // Структура для заказа
-        struct Order
-        {
-            public string CustomerName;
-            public List<Product> Products;
-            public int TotalPrice;
-        }
+        return order;
+    }
+}
 
-        static void Main(string[] args)
-        {
-            Console.WriteLine("=== МАГАЗИН ===\n");
+class Program
+{
+    static void Main()
+    {
+        var shop = new Shop();
 
-            // Создаем список товаров
-            List<Product> allProducts = new List<Product>
-            {
-                new Product { Name = "Хлеб", Price = 50 },
-                new Product { Name = "Молоко", Price = 80 },
-                new Product { Name = "Колбаса", Price = 190 },
-                new Product { Name = "Сыр", Price = 205 },
-                new Product { Name = "Яйца", Price = 100 }
-            };
+        var book = shop.AddProduct("Книга", 500, 100);
+        var pen = shop.AddProduct("Ручка", 50, 200);
 
-            // Покупатель
-            Console.Write("Введите ваше имя: ");
-            string customerName = Console.ReadLine();
+        var customer = shop.AddCustomer("Анна", "anna@mail.ru");
 
-            // Корзина покупателя
-            List<Product> cart = new List<Product>();
+        var order = shop.CreateOrder(customer,
+            (book, 2),
+            (pen, 5));
 
-            // Показываем товары
-            Console.WriteLine("\nНаши товары:");
-            for (int i = 0; i < allProducts.Count; i++)
-            {
-                Console.WriteLine($"{i + 1}. {allProducts[i].Name} - {allProducts[i].Price} руб.");
-            }
+        order.Pay("Карта");
 
-            // Добавляем товары в корзину
-            bool shopping = true;
-            while (shopping)
-            {
-                Console.Write("\nВведите номер товара для добавления (0 - закончить): ");
-                int choice = int.Parse(Console.ReadLine());
-
-                if (choice == 0)
-                {
-                    shopping = false;
-                }
-                else if (choice > 0 && choice <= allProducts.Count)
-                {
-                    cart.Add(allProducts[choice - 1]);
-                    Console.WriteLine($"Добавлен: {allProducts[choice - 1].Name}");
-                }
-            }
-
-            // Создаем заказ
-            Order order = new Order();
-            order.CustomerName = customerName;
-            order.Products = cart;
-
-            // Считаем сумму
-            int total = 0;
-            foreach (var product in cart)
-            {
-                total += product.Price;
-            }
-            order.TotalPrice = total;
-
-            // Показываем заказ
-            Console.WriteLine("\n=== ВАШ ЗАКАЗ ===");
-            Console.WriteLine($"Покупатель: {order.CustomerName}");
-            Console.WriteLine("Товары:");
-
-            for (int i = 0; i < order.Products.Count; i++)
-            {
-                Console.WriteLine($"  {order.Products[i].Name} - {order.Products[i].Price} руб.");
-            }
-
-            Console.WriteLine($"\nОбщая сумма: {order.TotalPrice} руб.");
-
-            // Процесс оплаты
-            Console.WriteLine("\n=== ОПЛАТА ===");
-            Console.WriteLine($"К оплате: {order.TotalPrice} руб.");
-            Console.Write("Введите сумму для оплаты: ");
-            int payment = int.Parse(Console.ReadLine());
-
-            if (payment >= order.TotalPrice)
-            {
-                Console.WriteLine("Оплата прошла успешно!");
-                if (payment > order.TotalPrice)
-                {
-                    Console.WriteLine($"Сдача: {payment - order.TotalPrice} руб.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Недостаточно средств!");
-            }
-
-            Console.WriteLine("\nСпасибо за покупку!");
-        }
+        Console.WriteLine($"Заказ #{order.Id}");
+        Console.WriteLine($"Клиент: {customer.Name}");
+        Console.WriteLine($"Сумма: {order.Total:C}");
+        Console.WriteLine($"Статус: {order.Status}");
     }
 }
